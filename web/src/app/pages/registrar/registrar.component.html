@@ -1,0 +1,76 @@
+<div class="split-layout">
+  
+
+  <div class="banner-side">
+    <div class="banner-content">
+      <div class="logo-container">
+        <mat-icon class="leaf-icon">eco</mat-icon>
+        <h1>Horizontes do Agro</h1>
+      </div>
+      <p>Crie sua conta para gerenciar sua propriedade rural. Registre setores, equipamentos, funcionários, insumos, clima e atividades, mantendo os documentos de cada um deles organizados em um único lugar.</p>
+    </div>
+  </div>
+
+  <div class="form-side">
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="dark-form">
+      <h2>Criar nova conta</h2>
+
+      <div class="field-group">
+        <label>Nome Completo</label>
+        <input type="text" formControlName="nomeCompleto" placeholder="Ex: Joao da Silva">
+      </div>
+
+      <div class="form-row">
+        <div class="field-group">
+          <label>Nome de Usuario</label>
+          <input type="text" formControlName="nomeUsuario" placeholder="Ex: joaosilva">
+        </div>
+        <div class="field-group">
+          <label>CPF</label>
+          <input type="text" formControlName="cpf" mask="000.000.000-00" [dropSpecialCharacters]="false" placeholder="000.000.000-00">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="seu@email.com">
+      </div>
+
+      <div class="divider">
+        <span>segurança da conta</span>
+      </div>
+
+      <div class="field-group">
+        <label>Senha</label>
+        <div class="input-with-icon">
+          <input [type]="hideSenha ? 'password' : 'text'" formControlName="senha" placeholder="Minimo 6 caracteres">
+          <mat-icon class="eye-icon" (click)="hideSenha = !hideSenha">
+            {{hideSenha ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Confirmar Senha</label>
+        <div class="input-with-icon">
+          <input [type]="hideConfirmarSenha ? 'password' : 'text'" formControlName="confirmarSenha" placeholder="Repita a senha">
+          <mat-icon class="eye-icon" (click)="hideConfirmarSenha = !hideConfirmarSenha">
+            {{hideConfirmarSenha ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
+        </div>
+        <span class="error-text" *ngIf="registroForm.hasError('senhasDiferentes') && registroForm.get('confirmarSenha')?.touched">
+          As senhas não coincidem.
+        </span>
+      </div>
+
+      <button class="btn-submit" type="submit" [disabled]="registroForm.invalid || carregando">
+        {{ carregando ? 'Processando...' : 'Criar Conta' }}
+      </button>
+
+      <div class="login-link">
+        <span>Já possui uma conta? <a routerLink="/login">Fazer login</a></span>
+      </div>
+    </form>
+  </div>
+
+</div>

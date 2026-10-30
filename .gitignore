@@ -1,0 +1,17 @@
+.env
+
+# Backend
+api/target/
+api/.mvn/wrapper/maven-wrapper.jar
+
+# Frontend
+web/node_modules/
+web/dist/
+web/.angular/
+
+# IDE / SO
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

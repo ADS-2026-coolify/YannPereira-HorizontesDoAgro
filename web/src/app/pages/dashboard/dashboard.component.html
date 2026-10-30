@@ -1,0 +1,95 @@
+<div class="page-container">
+
+  <header class="page-header">
+    <div class="header-titles">
+      <h1 class="page-title">Painel Geral</h1>
+      <p class="page-subtitle" *ngIf="propriedadeAtual">
+        {{ propriedadeAtual.nome }} &middot; <span class="capitalize">{{ nomeMesAtual }}</span>
+      </p>
+    </div>
+  </header>
+
+  <div *ngIf="carregando" class="estado-info">
+    Carregando informações do painel...
+  </div>
+
+  <div *ngIf="!carregando && !existemPropriedades" class="estado-vazio">
+    <i class="ph ph-house-line"></i>
+    <h2>Nenhuma propriedade cadastrada</h2>
+    <p>Cadastre sua primeira propriedade para começar a acompanhar setores, equipamentos, funcionários e clima.</p>
+    <a class="btn-primary" routerLink="/painel/propriedades">+ Cadastrar Propriedade</a>
+  </div>
+
+  <ng-container *ngIf="!carregando && existemPropriedades">
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon rain">
+          <i class="ph ph-cloud-rain"></i>
+        </div>
+        <div class="stat-info">
+          <strong>{{ resumo.chuvaMesAtualMm }} mm</strong>
+          <span>Chuva no mês atual</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="ph ph-intersect"></i>
+        </div>
+        <div class="stat-info">
+          <strong>{{ resumo.setoresAtivos }}</strong>
+          <span>Setores ativos <small>de {{ resumo.setoresTotal }}</small></span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="ph ph-tractor"></i>
+        </div>
+        <div class="stat-info">
+          <strong>{{ resumo.equipamentosAtivos }}</strong>
+          <span>Equipamentos ativos <small>de {{ resumo.equipamentosTotal }}</small></span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="ph ph-users"></i>
+        </div>
+        <div class="stat-info">
+          <strong>{{ resumo.funcionariosAtivos }}</strong>
+          <span>Funcionários ativos <small>de {{ resumo.funcionariosTotal }}</small></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-access">
+      <h2 class="section-title">Acesso Rápido</h2>
+
+      <div class="quick-grid">
+        <a class="quick-card" routerLink="/painel/propriedades">
+          <div class="quick-icon"><i class="ph ph-house"></i></div>
+          <span>Propriedades</span>
+        </a>
+
+        <a class="quick-card" routerLink="/painel/atividades">
+          <div class="quick-icon"><i class="ph ph-clipboard-text"></i></div>
+          <span>Atividades</span>
+        </a>
+
+        <a class="quick-card" routerLink="/painel/clima">
+          <div class="quick-icon"><i class="ph ph-cloud-sun"></i></div>
+          <span>Clima</span>
+        </a>
+
+        <a class="quick-card" routerLink="/painel/documentos">
+          <div class="quick-icon"><i class="ph ph-file-text"></i></div>
+          <span>Documentos</span>
+        </a>
+      </div>
+    </section>
+
+  </ng-container>
+
+</div>

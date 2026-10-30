@@ -1,0 +1,162 @@
+@use '../../../styles/colors' as *;
+
+.login-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.branding-panel {
+  flex: 1;
+  background-color: $green-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $text-light;
+  padding: 40px;
+
+  .branding-content {
+    max-width: 450px;
+    text-align: center;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+
+      mat-icon {
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+      }
+
+      h1 {
+        font-family: 'Georgia', serif;
+        font-size: 3rem;
+        margin: 0;
+        font-weight: bold;
+      }
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+  }
+}
+
+.form-panel {
+  flex: 1;
+  background-color: $bg-dark; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $text-light;
+
+  .form-content {
+    width: 100%;
+    max-width: 380px;
+
+    h2 {
+      font-family: 'Georgia', serif;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 40px;
+      line-height: 1.3;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        label {
+          font-size: 0.85rem;
+          font-weight: 500;
+          color: $text-light;
+        }
+      }
+
+      ::ng-deep .custom-dark-input {
+        width: 100%;
+        
+        .mdc-text-field--outlined {
+          --mdc-outlined-text-field-container-color: #{$bg-input}; 
+          --mdc-outlined-text-field-outline-color: #{$border-color}; 
+          --mdc-outlined-text-field-hover-outline-color: #{$green-primary}; 
+          --mdc-outlined-text-field-focus-outline-color: #{$green-primary};
+          --mdc-outlined-text-field-input-text-color: #{$text-light};
+        }
+
+        .mdc-text-field__input::placeholder {
+          color: $text-muted;
+        }
+
+        .mat-mdc-form-field-subscript-wrapper {
+          display: none; 
+        }
+      }
+
+      .eye-icon {
+        color: $text-muted;
+      }
+
+      .btn-submit {
+        background-color: $green-primary;
+        color: $text-light;
+
+        &:hover:not(:disabled) {
+          background-color: $green-hover;
+        }
+        padding: 26px 0;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-top: 15px;
+        border-radius: 4px;
+
+        &:disabled {
+          background-color: $border-color;
+          color: $text-muted;
+        }
+      }
+
+      .register-link {
+        text-align: center;
+        font-size: 0.85rem;
+        color: $text-muted;
+        margin-top: 15px;
+
+        a {
+          color: $text-light;
+          text-decoration: underline;
+          cursor: pointer;
+
+          &:hover {
+            color: $green-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-layout {
+    flex-direction: column;
+  }
+  .branding-panel, .form-panel {
+    flex: auto;
+    padding: 40px 20px;
+    height: 50vh;
+  }
+}

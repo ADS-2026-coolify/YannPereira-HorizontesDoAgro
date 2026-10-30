@@ -1,0 +1,101 @@
+<div class="page-container">
+  <header class="page-header">
+    <h2 class="page-title">Funcionários</h2>
+    <button class="btn-primary" (click)="abrirModalAdicionar()">
+      + Adicionar Funcionário
+    </button>
+  </header>
+
+  <div class="content-card">
+    <div class="filters-group">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar funcionário..."
+        name="termoBusca"
+        [(ngModel)]="termoBusca"
+        (ngModelChange)="aplicarFiltro()">
+    </div>
+
+    <div class="table-responsive">
+      <table class="sifeo-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cargo</th>
+            <th>Telefone</th>
+            <th>Data de Admissão</th>
+            <th>Propriedade</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="carregando">
+            <td colspan="7" class="text-center">Carregando funcionários...</td>
+          </tr>
+          <tr *ngIf="!carregando && funcionariosFiltrados.length === 0">
+            <td colspan="7" class="text-center">Nenhum funcionário encontrado.</td>
+          </tr>
+          <tr *ngFor="let func of funcionariosFiltrados">
+
+            <td data-label="Nome">{{ func.nomeCompleto }}</td>
+            <td data-label="Cargo">{{ func.cargo || '-' }}</td>
+            <td data-label="Telefone">{{ func.telefone || '-' }}</td>
+            <td data-label="Data de Admissão">{{ (func.dataAdmissao | date:'dd/MM/yyyy') || '-' }}</td>
+            <td data-label="Propriedade">{{ func.propriedadeNome || '-' }}</td>
+            <td data-label="Status">
+              <span class="status-badge" [ngClass]="func.status === 'ATIVO' ? 'ativo' : 'inativo'">
+                {{ func.status }}
+              </span>
+            </td>
+            <td data-label="Ações" class="action-buttons text-center">
+              <button class="btn-icon edit" (click)="abrirModalEdicao(func)" title="Editar">
+                <i class="ph ph-pencil-simple"></i>
+              </button>
+              <button class="btn-icon delete" (click)="deletarFuncionario(func.id)" title="Excluir">
+                <i class="ph ph-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-registrar-funcionario-dialog
+  *ngIf="mostrarModal"
+  [funcionarioEdicao]="funcionarioSelecionado"
+  (fechar)="fecharModal()"
+  (salvo)="carregarFuncionarios()">
+</app-registrar-funcionario-dialog>
+
+<div class="confirm-dialog-overlay" *ngIf="mostrarModalExclusao">
+  <div class="confirm-dialog-card">
+
+    <header class="confirm-header">
+      <div class="title-wrapper">
+        <i class="ph-fill ph-warning text-warning"></i>
+        <h2>Excluir Funcionário</h2>
+      </div>
+      <button class="btn-close-icon" (click)="cancelarExclusao()">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="confirm-body">
+      <p>Tem certeza que deseja excluir este funcionário? Esta ação não poderá ser desfeita.</p>
+    </div>
+
+    <footer class="confirm-actions">
+      <button class="btn-cancel" (click)="cancelarExclusao()" [disabled]="carregandoExclusao">
+        Cancelar
+      </button>
+      <button class="btn-danger" (click)="confirmarExclusao()" [disabled]="carregandoExclusao">
+        {{ carregandoExclusao ? 'Excluindo...' : 'Sim, Excluir' }}
+      </button>
+    </footer>
+
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="sifeo-layout">
+  
+  <app-sidebar 
+    [menuMobileAberto]="menuAberto" 
+    (fecharMenuMobile)="menuAberto = false">
+  </app-sidebar>
+  
+  <main class="main-content">
+    
+    <app-topbar (alternarMenuMobile)="alternarMenu()"></app-topbar>
+
+    <section class="content-area">
+      <router-outlet></router-outlet>
+    </section>
+    
+  </main>
+
+  <div class="sidebar-overlay" *ngIf="menuAberto" (click)="menuAberto = false"></div>
+</div>

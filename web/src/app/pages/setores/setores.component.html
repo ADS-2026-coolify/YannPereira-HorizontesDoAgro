@@ -1,0 +1,79 @@
+<div class="page-container">
+  
+  <header class="page-header">
+    <h1 class="page-title">Setores</h1>
+    <button class="btn-primary" (click)="abrirModal()">
+      + Cadastrar Setor
+    </button>
+  </header>
+
+  <main class="page-content">
+    <div class="content-card">
+      <div class="table-responsive">
+        <table class="sifeo-table">
+          <thead>
+            <tr>
+              <th>Nome do Setor</th>
+              <th>Propriedade</th>
+              <th>Área (Hectares)</th>
+              <th>Cultura / Plantio</th>
+              <th>Status</th>
+              <th>Data de Encerramento</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngIf="carregandoTabela">
+              <td colspan="7" class="text-center" style="padding: 2rem;">Carregando setores...</td>
+            </tr>
+            <tr *ngIf="!carregandoTabela && listaSetores.length === 0">
+              <td colspan="7" class="text-center" style="padding: 2rem;">Nenhum setor cadastrado para esta propriedade.</td>
+            </tr>
+
+            <tr *ngFor="let setor of listaSetores">
+              <td data-label="Nome do Setor">{{ setor.nome }}</td>
+              <td data-label="Propriedade">{{ setor.nomePropriedade }}</td>
+              <td data-label="Área (Hectares)">{{ setor.hectares }}</td>
+              <td data-label="Cultura / Plantio">{{ setor.plantio || 'Não definido' }}</td>
+              <td data-label="Status">
+                <span class="status-badge" [ngClass]="setor.status | lowercase">
+                  {{ setor.status.replace('_', ' ') }}
+                </span>
+              </td>
+              <td data-label="Data de Encerramento">
+                {{ setor.dataEncerramento ? (setor.dataEncerramento | date:'dd/MM/yyyy') : '-' }}
+              </td>
+              <td data-label="Ações">
+                <div class="action-buttons">
+                    <button class="btn-icon edit" (click)="abrirModalEdicao(setor)" title="Editar Setor">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                
+                    <button class="btn-icon delete" (click)="deletarSetor(setor.id)" title="Excluir Setor">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<app-cadastrar-setor-dialog
+  *ngIf="mostrarModal"
+  [setorParaEditar]="setorSelecionadoParaEdicao"
+  (fechar)="fecharModal()"
+  (setorSalvo)="atualizarLista()">
+</app-cadastrar-setor-dialog>
+
+<app-confirm-dialog
+  *ngIf="idSetorParaExcluir !== null"
+  titulo="Excluir Setor"
+  mensagem="Tem certeza que deseja excluir este setor? Esta ação removerá os dados permanentemente do sistema."
+  (resposta)="aoResponderExclusao($event)">
+</app-confirm-dialog>

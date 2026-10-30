@@ -1,0 +1,49 @@
+<div class="brand">
+  <div class="logo-container">
+    <i class="ph ph-leaf"></i> 
+    <span class="brand-text" *ngIf="expandido">Horizontes do Agro</span> 
+  </div>
+
+  <button class="toggle-btn" (click)="alternarTamanho()">
+    <i class="ph" [ngClass]="expandido ? 'ph-caret-left' : 'ph-list'"></i>
+  </button>
+</div>
+
+<nav class="menu">
+  <a routerLink="/painel" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="Painel Geral" (click)="aoClicarNoLink()">
+    <i class="ph ph-squares-four"></i> 
+    <span *ngIf="expandido">Painel Geral</span>
+  </a>
+  <a routerLink="/painel/propriedades" routerLinkActive="active" title="Propriedades" (click)="aoClicarNoLink()">
+    <i class="ph ph-house"></i> 
+    <span *ngIf="expandido">Propriedades</span>
+  </a>
+  <a routerLink="/painel/setores" routerLinkActive="active" title="Setores" (click)="aoClicarNoLink()">
+    <i class="ph ph-intersect"></i> 
+    <span *ngIf="expandido">Setores</span>
+  </a>
+  <a routerLink="/painel/equipamentos" routerLinkActive="active" title="Equipamentos" (click)="aoClicarNoLink()">
+    <i class="ph ph-tractor"></i>  
+    <span *ngIf="expandido">Equipamentos</span>
+  </a>
+  <a routerLink="/painel/atividades" routerLinkActive="active" title="Atividades" (click)="aoClicarNoLink()">
+    <i class="ph ph-clipboard-text"></i> 
+    <span *ngIf="expandido">Atividades</span>
+  </a>
+  <a routerLink="/painel/funcionarios" routerLinkActive="active" title="Funcionários" (click)="aoClicarNoLink()">
+    <i class="ph ph-users"></i> 
+    <span *ngIf="expandido">Funcionários</span>
+  </a>
+  <a routerLink="/painel/insumos" routerLinkActive="active" title="Insumos" (click)="aoClicarNoLink()">
+    <i class="ph ph-package"></i> 
+    <span *ngIf="expandido">Insumos</span>
+  </a>
+  <a routerLink="/painel/clima" routerLinkActive="active" title="Clima" (click)="aoClicarNoLink()">
+    <i class="ph ph-cloud-sun"></i>
+    <span *ngIf="expandido">Clima</span>
+  </a>
+  <a routerLink="/painel/documentos" routerLinkActive="active" title="Documentos" (click)="aoClicarNoLink()">
+    <i class="ph ph-file-text"></i>
+    <span *ngIf="expandido">Documentos</span>
+  </a>
+</nav>

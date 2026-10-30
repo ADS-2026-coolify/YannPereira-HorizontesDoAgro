@@ -1,0 +1,171 @@
+@use '../../../../../../styles/colors' as *;
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $overlay-bg;
+  backdrop-filter: blur(3px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.dialog-card {
+  background-color: $bg-card;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid $border-color;
+
+    h2 {
+      margin: 0;
+      color: $text-light;
+      font-size: 1.25rem;
+    }
+
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: $text-muted;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: $text-light;
+      }
+    }
+  }
+
+  .dialog-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    .alert-error {
+      background-color: rgba(211, 47, 47, 0.15);
+      border: 1px solid rgba(211, 47, 47, 0.4);
+      color: #ff6b6b;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      i { font-size: 1.2rem; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        color: $text-muted;
+        font-size: 0.85rem;
+      }
+
+      input {
+        background-color: $bg-input;
+        border: 1px solid $border-color;
+        color: $text-light;
+        padding: 10px 12px;
+        border-radius: 4px;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease;
+
+        &:focus {
+          border-color: $green-primary;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    padding: 16px 24px;
+    border-top: 1px solid $border-color;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    box-sizing: border-box;
+
+    button {
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid $border-color;
+      color: $text-light;
+
+      &:hover {
+        background: #2a2a2a;
+      }
+    }
+
+    .btn-primary {
+      background-color: $green-primary;
+      color: white;
+
+      &:hover {
+        background-color: $green-hover;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-overlay {
+    padding: 12px;
+  }
+
+  .dialog-card {
+    max-width: 100%;
+    max-height: 95vh;
+
+    .dialog-header, .dialog-body, .dialog-actions {
+      padding: 16px;
+    }
+
+    .dialog-actions {
+      flex-direction: column-reverse;
+      gap: 8px;
+
+      button {
+        width: 100%;
+        padding: 12px;
+      }
+    }
+  }
+}

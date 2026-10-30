@@ -1,0 +1,135 @@
+<div class="page-container">
+  <header class="page-header">
+    <h2 class="page-title">Clima</h2>
+    <button class="btn-primary" (click)="abrirModalAdicionar()">
+      + Registrar Clima
+    </button>
+  </header>
+
+  <div class="content-card">
+    <div class="filters-group">
+
+      <div class="date-filter-group">
+        <div class="date-filter-item">
+          <span class="date-filter-label">De:</span>
+          <input
+            type="date"
+            class="search-input date-input"
+            [(ngModel)]="dataInicio"
+            (ngModelChange)="aplicarFiltros()"
+          >
+        </div>
+        <div class="date-filter-item">
+          <span class="date-filter-label">Até:</span>
+          <input
+            type="date"
+            class="search-input date-input"
+            [(ngModel)]="dataFim"
+            (ngModelChange)="aplicarFiltros()"
+          >
+        </div>
+      </div>
+      <select class="filter-select" [(ngModel)]="filtroTempo" (ngModelChange)="aplicarFiltros()">
+        <option value="">Todos os Tipos</option>
+        <option value="ENSOLARADO">Ensolarado</option>
+        <option value="NUBLADO">Nublado</option>
+        <option value="CHUVOSO">Chuvoso</option>
+        <option value="TEMPESTADE">Tempestade</option>
+      </select>
+    </div>
+
+    <div class="table-responsive">
+      <table class="sifeo-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Tempo</th>
+            <th>Milímetros (mm)</th>
+            <th>Descrição</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="carregando">
+            <td colspan="6" class="text-center">Carregando registros...</td>
+          </tr>
+          <tr *ngIf="!carregando && registrosFiltrados.length === 0">
+            <td colspan="6" class="text-center">Nenhum registro climático encontrado.</td>
+          </tr>
+          
+          <tr *ngFor="let clima of registrosFiltrados">
+            <td data-label="Data">{{ clima.dataHora | date:'dd/MM/yyyy' }}</td>
+            <td data-label="Horário">{{ clima.dataHora | date:'HH:mm' }}</td>
+            
+            <td data-label="Tempo">
+              <span class="badge-tempo" [ngClass]="clima.tempo | lowercase">
+                {{ clima.tempo }}
+              </span>
+            </td>
+            
+            <td data-label="Milímetros (mm)">{{ clima.milimetros }}</td>
+            <td data-label="Descrição">{{ clima.descricao || '-' }}</td>
+            
+            <td data-label="Ações" class="action-buttons text-center">
+              <button class="btn-icon edit" (click)="abrirModalEdicao(clima)" title="Editar">
+                <i class="ph ph-pencil-simple"></i>
+              </button>
+              <button class="btn-icon delete" (click)="deletarRegistro(clima.id)" title="Excluir">
+                <i class="ph ph-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="resumo-section">
+    <h3 class="resumo-title">Resumo do Período</h3>
+    <div class="resumo-grid">
+      <div class="resumo-card">
+        <div class="resumo-valor text-green">{{ resumo.totalMm }}</div>
+        <div class="resumo-label">TOTAL MM</div>
+      </div>
+      <div class="resumo-card">
+        <div class="resumo-valor text-orange">{{ resumo.diasChuva }}</div>
+        <div class="resumo-label">REGISTROS COM CHUVA</div>
+      </div>
+      <div class="resumo-card">
+        <div class="resumo-valor text-green">{{ resumo.diasEnsolarados }}</div>
+        <div class="resumo-label">DIAS ENSOLARADOS</div>
+      </div>
+      <div class="resumo-card">
+        <div class="resumo-valor text-gray">{{ resumo.diasNublados }}</div>
+        <div class="resumo-label">DIAS NUBLADOS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-dialog-overlay" *ngIf="mostrarModalExclusao">
+  <div class="confirm-dialog-card">
+    <header class="confirm-header">
+      <div class="title-wrapper">
+        <i class="ph-fill ph-warning text-warning"></i>
+        <h2>Excluir Registro</h2>
+      </div>
+      <button class="btn-close-icon" (click)="cancelarExclusao()"><i class="ph ph-x"></i></button>
+    </header>
+    <div class="confirm-body">
+      <p>Tem certeza que deseja excluir este registro climático? Esta ação não poderá ser desfeita.</p>
+    </div>
+    <footer class="confirm-actions">
+      <button class="btn-cancel" (click)="cancelarExclusao()" [disabled]="carregandoExclusao">Cancelar</button>
+      <button class="btn-danger" (click)="confirmarExclusao()" [disabled]="carregandoExclusao">Sim, Excluir</button>
+    </footer>
+  </div>
+</div>
+
+<app-registrar-clima-dialog
+  *ngIf="mostrarModal"
+  [climaEdicao]="registroSelecionado"
+  (fechar)="fecharModal()"
+  (salvo)="carregarRegistros()">
+</app-registrar-clima-dialog>

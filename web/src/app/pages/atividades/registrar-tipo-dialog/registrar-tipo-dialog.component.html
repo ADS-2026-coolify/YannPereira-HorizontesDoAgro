@@ -1,0 +1,38 @@
+<div class="dialog-overlay">
+  <div class="dialog-card modal-compacto">
+    
+    <header class="dialog-header">
+      <h2>Novo Tipo de Atividade</h2>
+      <button class="btn-close" (click)="cancelar()" type="button">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-group">
+        <label>Nome do Tipo *</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nome" 
+          placeholder="Ex: Pulverização, Colheita, Poda..."
+          (keyup.enter)="confirmar()"
+          autofocus
+        >
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()" [disabled]="carregando" type="button">
+        Cancelar
+      </button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando || !nome.trim()" type="button">
+        {{ carregando ? 'Salvando...' : 'Salvar Tipo' }}
+      </button>
+    </footer>
+
+  </div>
+</div>

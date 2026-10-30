@@ -1,0 +1,252 @@
+@use '../../../styles/colors' as *;
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: $text-light;
+    margin: 0;
+  }
+
+  .btn-primary {
+    background-color: $green-primary;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover { background-color: $green-hover; }
+  }
+}
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.resumo-card {
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  i { font-size: 26px; }
+
+  strong {
+    display: block;
+    font-size: 1.3rem;
+    color: $text-light;
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: $text-muted;
+  }
+
+  &.receita i { color: $green-status; }
+  &.despesa i { color: $red-status; }
+  &.saldo i { color: $blue-accent; }
+  &.saldo.negativo strong { color: $red-status; }
+}
+
+.filtros-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  .filtro-busca {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: $bg-input;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 0 12px;
+
+    i { color: $text-muted; }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: $text-light;
+      padding: 10px 0;
+      outline: none;
+    }
+  }
+
+  select {
+    background-color: $bg-input;
+    border: 1px solid $border-color;
+    color: $text-light;
+    padding: 10px 12px;
+    border-radius: 6px;
+    outline: none;
+  }
+}
+
+.estado-info {
+  color: $text-muted;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.documentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.documento-card {
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s;
+
+  &:hover { border-color: #3a3a3a; }
+
+  .documento-card-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+
+  .documento-icone {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(85, 112, 72, 0.15);
+    color: $green-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i { font-size: 22px; }
+  }
+
+  .valor-badge {
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+
+    &.receita { color: $green-status; }
+    &.despesa { color: $red-status; }
+  }
+
+  .documento-nome {
+    margin: 0;
+    font-size: 1.05rem;
+    color: $text-light;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .categoria-badge {
+    align-self: flex-start;
+    background-color: rgba(74, 144, 184, 0.15);
+    color: $blue-accent-light;
+    border: 1px solid rgba(111, 179, 216, 0.3);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .documento-vinculo, .documento-data {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .documento-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 8px;
+    border-top: 1px solid $border-color;
+    padding-top: 12px;
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: $text-muted;
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+
+      i { font-size: 18px; }
+
+      &.baixar:hover { color: $blue-accent-light; background-color: rgba(111, 179, 216, 0.15); }
+      &.edit:hover { color: $green-primary; background-color: rgba(85, 112, 72, 0.15); }
+      &.delete:hover { color: $red-danger; background-color: rgba(211, 47, 47, 0.15); }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .filtros-bar {
+    flex-direction: column;
+
+    select { width: 100%; }
+  }
+
+  .documentos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

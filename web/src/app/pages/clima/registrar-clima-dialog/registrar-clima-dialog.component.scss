@@ -1,0 +1,179 @@
+.dialog-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000; backdrop-filter: blur(4px);
+}
+
+.dialog-card {
+  background-color: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+  width: 100%; max-width: 650px; 
+  padding: 1.5rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: #e0e0e0; max-height: 90vh; overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
+  h2 { font-size: 1.25rem; font-weight: 600; color: #fff; margin: 0; }
+  .btn-close {
+    background: transparent; border: none; color: #888; cursor: pointer; font-size: 1.2rem;
+    &:hover { color: #fff; }
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem; flex: 1;
+  label { display: block; font-size: 0.85rem; color: #b0b0b0; margin-bottom: 0.5rem; }
+  input, select, textarea {
+    width: 100%; background-color: #222; border: 1px solid #333; color: #fff;
+    padding: 0.75rem; border-radius: 6px; font-family: inherit; outline: none; box-sizing: border-box;
+    &:focus { border-color: #557048; }
+  }
+}
+
+.form-row {
+  display: flex; gap: 1rem;
+  @media (max-width: 500px) { flex-direction: column; gap: 0; }
+}
+
+.select-multiple {
+  height: 100px;
+  padding: 0.5rem !important;
+  option {
+    padding: 0.4rem;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    &:checked {
+      background-color: #557048 !important;
+      color: white;
+    }
+  }
+}
+
+.alert-error {
+  background-color: rgba(211, 47, 47, 0.1); color: #ff5252; border: 1px solid rgba(211, 47, 47, 0.3);
+  padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+}
+
+.dialog-actions {
+  display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;
+  button { padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; transition: background-color 0.2s; }
+  .btn-outline { background: transparent; border: 1px solid #444; color: #ccc; &:hover { background: rgba(255, 255, 255, 0.05); } }
+  .btn-primary { background-color: #557048; color: #fff; &:hover { background-color: #6a8b59; } &:disabled { opacity: 0.6; cursor: not-allowed; } }
+}
+
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.confirm-dialog-card {
+  background-color: #1a1a1a; 
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .confirm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #f1f1f1;
+        margin: 0;
+      }
+
+      .text-warning {
+        color: #f59e0b; 
+        font-size: 1.5rem;
+      }
+    }
+
+    .btn-close-icon {
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      
+      &:hover { color: #fff; }
+    }
+  }
+
+  .confirm-body {
+    p {
+      color: #a0a0a0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+
+    button {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel {
+      background-color: transparent;
+      color: #ddd;
+      border: 1px solid #444;
+      
+      &:hover {
+        background-color: #2a2a2a;
+        border-color: #666;
+        color: #fff;
+      }
+    }
+
+    .btn-danger {
+      background-color: #d32f2f;
+      color: white;
+      border: 1px solid #d32f2f;
+      
+      &:hover {
+        background-color: #b71c1c;
+        border-color: #b71c1c;
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

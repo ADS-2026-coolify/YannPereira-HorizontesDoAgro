@@ -1,0 +1,46 @@
+services:
+  banco:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sifeo_db}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - dados_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-sifeo_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+    environment:
+      DB_HOST: banco
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-sifeo_db}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:-sifeo_secret_key_projeto_tcc_fema_desenvolvimento_seguro_2026}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-7200000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8090}
+    depends_on:
+      banco:
+        condition: service_healthy
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-8090}:80"
+    restart: unless-stopped
+
+volumes:
+  dados_postgres:

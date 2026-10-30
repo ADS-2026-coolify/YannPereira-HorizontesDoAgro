@@ -1,0 +1,90 @@
+<div class="dialog-overlay">
+  <div class="dialog-card">
+
+    <header class="dialog-header">
+      <h2>{{ isEdicao ? 'Editar Equipamento' : 'Cadastrar Equipamento' }}</h2>
+      <button class="btn-close" (click)="cancelar()">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-group">
+        <label>Nome do Equipamento *</label>
+        <input type="text" [(ngModel)]="dadosEquipamento.nome" placeholder="Ex: Trator Principal">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Propriedade *</label>
+          <select [(ngModel)]="dadosEquipamento.sitioId">
+            <option [ngValue]="null">Selecione a propriedade...</option>
+            <option *ngFor="let prop of propriedades" [ngValue]="prop.id">
+              {{ prop.nome }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select [(ngModel)]="dadosEquipamento.tipo">
+            <option value="" disabled>Selecione...</option>
+            <option value="Trator">Trator</option>
+            <option value="Colheitadeira">Colheitadeira</option>
+            <option value="Pulverizador">Pulverizador</option>
+            <option value="Plantadeira">Plantadeira</option>
+            <option value="Implemento">Implemento</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Marca / Modelo</label>
+          <input type="text" [(ngModel)]="dadosEquipamento.marcaModelo" placeholder="Ex: John Deere S790">
+        </div>
+        <div class="form-group">
+          <label>Ano</label>
+          <input type="number" [(ngModel)]="dadosEquipamento.ano" placeholder="Ex: 2022">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data de Aquisição *</label>
+          <input type="date" [(ngModel)]="dadosEquipamento.dataAquisicao">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="dadosEquipamento.status">
+            <option value="ATIVO">Ativo</option>
+            <option value="MANUTENCAO">Em Manutenção</option>
+            <option value="VENDIDO">Vendido</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="dadosEquipamento.status === 'VENDIDO'">
+        <label>Data de Venda</label>
+        <input type="date" [(ngModel)]="dadosEquipamento.dataVenda">
+      </div>
+
+      <div class="form-group">
+        <label>Descrição / Observações</label>
+        <textarea [(ngModel)]="dadosEquipamento.descricao" rows="2" placeholder="Informações adicionais..."></textarea>
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()">Cancelar</button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando">
+        {{ carregando ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </footer>
+
+  </div>
+</div>

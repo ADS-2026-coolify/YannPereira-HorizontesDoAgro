@@ -1,0 +1,51 @@
+name: Deploy no Coolify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validar:
+    name: Compilar API e front
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar o Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Compilar a API
+        working-directory: api
+        run: |
+          chmod +x mvnw
+          ./mvnw -B -DskipTests package
+
+      - name: Preparar o Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Compilar o front
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+  implantar:
+    name: Disparar o deploy
+    needs: validar
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar a API do Coolify
+        run: |
+          curl --fail-with-body --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
+            "${{ secrets.COOLIFY_URL }}/api/v1/deploy?uuid=${{ secrets.COOLIFY_UUID }}&force=false"

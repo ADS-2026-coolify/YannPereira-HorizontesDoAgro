@@ -1,0 +1,115 @@
+@use '../../../../styles/colors' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  height: 100vh;
+  background-color: $bg-card;
+  border-right: 1px solid $border-color;
+  transition: width 0.3s ease, left 0.3s ease;
+  
+  z-index: 1000; 
+
+  &.recolhido {
+    width: 80px;
+
+    .brand {
+      justify-content: center;
+      padding: 0;
+      .logo-container i { margin-right: 0; }
+    }
+
+    .menu a {
+      justify-content: center;
+      padding: 12px 0;
+      i { margin-right: 0; font-size: 1.5rem; }
+    }
+  }
+}
+
+.brand {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid $border-color;
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    color: $green-primary;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    i { margin-right: 8px; flex-shrink: 0; }
+
+    .brand-text {
+      color: $text-light;
+      font-size: 1rem;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .toggle-btn {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+
+    &:hover { color: $text-light; }
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  gap: 4px;
+
+  a {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    color: $text-muted;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 1rem;
+
+    i {
+      font-size: 1.2rem;
+      margin-right: 16px;
+    }
+
+    &:hover, &.active {
+      background-color: $bg-input;
+      color: $green-primary;
+      border-right: 3px solid $green-primary;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    position: fixed;
+    top: 0;
+    left: -260px; 
+    width: 260px !important; 
+    box-shadow: 4px 0 10px rgba(0,0,0,0.5);
+
+    &.open {
+      left: 0; 
+    }
+  }
+
+  .brand .toggle-btn {
+    display: none;
+  }
+}

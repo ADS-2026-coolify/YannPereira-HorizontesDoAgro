@@ -1,0 +1,74 @@
+<div class="dialog-overlay">
+  <div class="dialog-card">
+    
+    <header class="dialog-header">
+      <h2>Cadastrar Setor</h2>
+      <button class="btn-close" (click)="cancelar()">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-group">
+        <label>Nome do Setor *</label>
+        <input type="text" [(ngModel)]="dadosSetor.nome" placeholder="Ex: Setor A - Milho">
+      </div>
+
+      <div class="form-group">
+        <label>Propriedade *</label>
+        <select [(ngModel)]="dadosSetor.sitioId">
+          <option [ngValue]="null">Selecione a propriedade...</option>
+          <option *ngFor="let prop of propriedades" [ngValue]="prop.id">
+            {{ prop.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Área (hectares) *</label>
+          <input type="number" [(ngModel)]="dadosSetor.hectares" placeholder="0">
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de Cultura</label>
+          <select [(ngModel)]="dadosSetor.plantio">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="Milho">Milho</option>
+            <option value="Soja">Soja</option>
+            <option value="Pastagem">Pastagem</option>
+            <option value="Café">Café</option>
+            <option value="Trigo">Trigo</option>
+            <option value="Algodão">Algodão</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Status do Setor</label>
+          <select [(ngModel)]="dadosSetor.status">
+            <option value="EM_PREPARO">Em Preparo</option>
+            <option value="ATIVO">Ativo</option>
+            <option value="ENCERRADO">Encerrado</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Observações</label>
+        <textarea [(ngModel)]="dadosSetor.observacoes" rows="3" placeholder="Informações adicionais sobre o setor..."></textarea>
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()">Cancelar</button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando">
+        {{ carregando ? 'Salvando...' : 'Cadastrar' }}
+      </button>
+    </footer>
+
+  </div>
+</div>

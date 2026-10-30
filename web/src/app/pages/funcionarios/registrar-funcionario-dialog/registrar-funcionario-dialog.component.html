@@ -1,0 +1,78 @@
+<div class="dialog-overlay">
+  <div class="dialog-card">
+    <header class="dialog-header">
+      <h2>{{ isEdicao ? 'Editar Funcionário' : 'Adicionar Funcionário' }}</h2>
+      
+      <button class="btn-close" (click)="cancelar()">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome Completo *</label>
+          <input type="text" [(ngModel)]="dadosFuncionario.nomeCompleto" placeholder="Ex: João da Silva">
+        </div>
+        <div class="form-group">
+          <label>Cargo *</label>
+          <input type="text" [(ngModel)]="dadosFuncionario.cargo" placeholder="Ex: Operador de Máquinas">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telefone</label>
+          <input
+            type="text"
+            [(ngModel)]="dadosFuncionario.telefone"
+            mask="(00) 0000-0000||(00) 00000-0000"
+            placeholder="(18) 99999-9999">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="dadosFuncionario.email" placeholder="email@exemplo.com">
+          <small class="dica-campo" *ngIf="dadosFuncionario.email && !emailValido()">
+            Informe um e-mail válido.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>CPF (Apenas números)</label>
+          <input type="text" [(ngModel)]="dadosFuncionario.cpf" mask="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label>Status *</label>
+          <select [(ngModel)]="dadosFuncionario.status">
+            <option value="ATIVO">Ativo</option>
+            <option value="INATIVO">Inativo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data de Admissão *</label>
+          <input type="date" [(ngModel)]="dadosFuncionario.dataAdmissao">
+        </div>
+        <div class="form-group">
+          <label>Data de Nascimento</label>
+          <input type="date" [(ngModel)]="dadosFuncionario.dataNascimento">
+        </div>
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()">Cancelar</button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando">
+        {{ carregando ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </footer>
+  </div>
+</div>

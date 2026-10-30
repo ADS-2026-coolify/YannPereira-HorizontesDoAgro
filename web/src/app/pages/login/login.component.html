@@ -1,0 +1,48 @@
+<div class="login-layout">
+
+  <div class="branding-panel">
+    <div class="branding-content">
+      <div class="logo">
+        <mat-icon>eco</mat-icon>
+        <h1>Horizontes do Agro</h1>
+      </div>
+      <p>Gestão de propriedades rurais com foco no registro e na organização dos documentos. Controle setores, equipamentos, funcionários, insumos, clima e atividades em um único lugar.</p>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-content">
+      <h2>Informe seus dados para<br>realizar o Login</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+        <div class="input-group">
+          <label>Email</label>
+          <mat-form-field appearance="outline" class="custom-dark-input">
+            <input matInput type="email" formControlName="email" placeholder="seu@email.com">
+          </mat-form-field>
+        </div>
+
+        <div class="input-group">
+          <label>Senha</label>
+          <mat-form-field appearance="outline" class="custom-dark-input">
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" placeholder="********">
+            <button mat-icon-button matSuffix (click)="hide = !hide" type="button" class="eye-icon">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <button mat-flat-button type="submit" [disabled]="loginForm.invalid" class="btn-submit">
+          Entrar
+        </button>
+
+        <div class="register-link">
+          Ainda não tem uma conta? <a routerLink="/registrar">Cadastre-se</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

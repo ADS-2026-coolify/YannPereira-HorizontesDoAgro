@@ -1,0 +1,39 @@
+<div class="dialog-overlay">
+  <div class="dialog-card danger-theme">
+    
+    <div class="dialog-header">
+      <h2>Excluir Propriedade</h2>
+      <button class="btn-close" (click)="onCancelar()">&times;</button>
+    </div>
+
+    <div class="dialog-body">
+      <p class="warning-text">
+        Esta ação é <strong>irreversível</strong> os dados associados a 
+        <span class="highlight">"{{ nomePropriedade }}"</span> serão permanentemente removidos.
+      </p>
+
+      <label class="input-label">
+        Para confirmar, digite o nome exato da propriedade abaixo:
+      </label>
+      
+      <input 
+        type="text" 
+        class="sifeo-input" 
+        [(ngModel)]="textoDigitado" 
+        [placeholder]="nomePropriedade"
+        autocomplete="off">
+    </div>
+
+    <div class="dialog-footer">
+      <button class="btn-secondary" (click)="onCancelar()">Cancelar</button>
+      
+      <button 
+        class="btn-danger" 
+        [disabled]="textoDigitado !== nomePropriedade"
+        (click)="onConfirmar()">
+        Sim, Excluir
+      </button>
+    </div>
+
+  </div>
+</div>

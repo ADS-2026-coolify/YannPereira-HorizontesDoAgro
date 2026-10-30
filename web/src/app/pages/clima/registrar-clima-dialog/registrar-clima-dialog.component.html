@@ -1,0 +1,52 @@
+<div class="dialog-overlay">
+  <div class="dialog-card">
+    <header class="dialog-header">
+      <h2>{{ isEdicao ? 'Editar Registro de Clima' : 'Registrar Clima' }}</h2>
+      <button class="btn-close" (click)="cancelar()"><i class="ph ph-x"></i></button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex: 1;">
+          <label>Data e Hora *</label>
+          <input type="datetime-local" [(ngModel)]="dadosClima.dataHora">
+        </div>
+        
+        <div class="form-group" style="flex: 1;">
+          <label>Tempo *</label>
+          <select [(ngModel)]="dadosClima.tempo">
+            <option value="ENSOLARADO">Ensolarado</option>
+            <option value="NUBLADO">Nublado</option>
+            <option value="CHUVOSO">Chuvoso</option>
+            <option value="TEMPESTADE">Tempestade</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex: 1;">
+          <label>Milímetros de Chuva (mm)</label>
+          <input type="number" step="0.1" min="0" [(ngModel)]="dadosClima.milimetros" placeholder="Ex: 15.5">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Descrição (Opcional)</label>
+          <textarea [(ngModel)]="dadosClima.descricao" placeholder="Ex: Chuva forte e contínua durante a madrugada..." rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()">Cancelar</button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando">
+        {{ carregando ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </footer>
+  </div>
+</div>

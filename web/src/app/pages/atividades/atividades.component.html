@@ -1,0 +1,101 @@
+<div class="page-container">
+  
+  <header class="page-header">
+    <h1 class="page-title">Atividades</h1>
+    <button class="btn-primary" (click)="abrirModal()">
+      + Registrar Atividade
+    </button>
+  </header>
+
+  <div class="content-card">
+    <div class="filters-group">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar atividade..." 
+        [(ngModel)]="termoBusca"
+        (ngModelChange)="aplicarFiltros()">
+        
+      <select class="filter-select" [(ngModel)]="filtroTipo" (ngModelChange)="aplicarFiltros()">
+        <option value="ALL">Todos os Tipos</option>
+        <option *ngFor="let tipo of listaTipos" [value]="tipo.id">
+          {{ tipo.nome }}
+        </option>
+      </select>
+
+      <select class="filter-select" [(ngModel)]="filtroSetor" (ngModelChange)="aplicarFiltros()">
+        <option value="ALL">Todos os Setores</option>
+        <option *ngFor="let setor of listaSetores" [value]="setor.id">
+          {{ setor.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="table-responsive">
+      <table class="sifeo-table">
+        <thead>
+          <tr>
+            <th>Data e Hora</th>
+            <th>Tipo de Atividade</th>
+            <th>Descrição</th>
+            <th>Setor</th>
+            <th>Responsável</th>
+            <th>Equipamento</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr *ngIf="carregando">
+            <td colspan="8" class="text-center">Carregando atividades...</td>
+          </tr>
+          <tr *ngIf="!carregando && atividades.length === 0">
+            <td colspan="8" class="text-center">Nenhuma atividade encontrada.</td>
+          </tr>
+
+          <tr *ngFor="let atv of atividades">
+            <td data-label="Data e Hora">{{ atv.dataAtividade | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td data-label="Tipo de Atividade">{{ atv.tipoAtividadeNome }}</td>
+            <td data-label="Descrição">{{ atv.descricao }}</td>
+            <td data-label="Setor">{{ atv.setorNome }}</td>
+            <td data-label="Responsável">{{ atv.responsavelNome }}</td>
+            <td data-label="Equipamento">{{ atv.equipamentoNome }}</td>
+            
+            <td data-label="Status">
+              <span class="status-badge" [ngClass]="atv.status | lowercase">
+                {{ formatarStatus(atv.status) }}
+              </span>
+            </td>
+            
+            <td data-label="Ações">
+              <div class="action-buttons">
+                  <button class="btn-icon edit" (click)="abrirModalEdicao(atv)" title="Editar Atividade">
+                    <i class="ph ph-pencil-simple"></i>
+                  </button>
+              
+                  <button class="btn-icon delete" (click)="deletarAtividade(atv.id)" title="Excluir Atividade">
+                    <i class="ph ph-trash"></i>
+                  </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-registrar-atividade-dialog
+  *ngIf="mostrarModal"
+  [atividadeParaEditar]="atividadeSelecionada"
+  (fechar)="fecharModal()"
+  (salvo)="carregarAtividades()">
+</app-registrar-atividade-dialog>
+
+<app-confirm-dialog
+  *ngIf="idAtividadeExcluir !== null"
+  titulo="Excluir Atividade"
+  mensagem="Tem certeza que deseja excluir este registro de atividade?"
+  (resposta)="aoConfirmarExclusao($event)">
+</app-confirm-dialog>

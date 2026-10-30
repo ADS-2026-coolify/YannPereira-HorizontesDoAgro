@@ -1,0 +1,84 @@
+<div class="page-container">
+  
+  <header class="page-header">
+    <h1 class="page-title">Equipamentos</h1>
+    <button class="btn-primary" (click)="abrirModal()">
+      + Cadastrar Equipamento
+    </button>
+  </header>
+
+  <div class="content-card">
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar equipamento..." 
+        [(ngModel)]="termoBusca"
+        (input)="filtrarEquipamentos()">
+    </div>
+
+    <div class="table-responsive">
+      <table class="sifeo-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Marca / Modelo</th>
+            <th>Ano</th>
+            <th>Propriedade</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr *ngIf="carregando">
+            <td colspan="7" class="text-center" style="padding: 2rem;">Carregando equipamentos...</td>
+          </tr>
+          <tr *ngIf="!carregando && equipamentos.length === 0">
+            <td colspan="7" class="text-center" style="padding: 2rem;">Nenhum equipamento cadastrado.</td>
+          </tr>
+
+          <tr *ngFor="let eqp of equipamentos">
+            <td data-label="Nome">{{ eqp.nome }}</td>
+            <td data-label="Tipo">{{ eqp.tipo }}</td>
+            <td data-label="Marca / Modelo">{{ eqp.marcaModelo || '-' }}</td>
+            <td data-label="Ano">{{ eqp.ano || '-' }}</td>
+            <td data-label="Propriedade">{{ eqp.nomePropriedade || 'Não vinculada' }}</td>
+            <td data-label="Status">
+              <span class="status-badge" [ngClass]="eqp.status | lowercase">
+                {{ eqp.status }}
+              </span>
+            </td>
+            <td data-label="Ações">
+              <div class="action-buttons">
+                  <button class="btn-icon edit" (click)="abrirModalEdicao(eqp)" title="Editar Equipamento">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+              
+                  <button class="btn-icon delete" (click)="deletarEquipamento(eqp.id)" title="Excluir Equipamento">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-cadastrar-equipamento-dialog
+  *ngIf="mostrarModal"
+  [equipamentoParaEditar]="equipamentoSelecionado"
+  (fechar)="fecharModal()"
+  (salvo)="carregarEquipamentos()">
+</app-cadastrar-equipamento-dialog>
+
+<app-confirm-dialog
+  *ngIf="idEquipamentoExcluir !== null"
+  titulo="Excluir Equipamento"
+  mensagem="Tem certeza que deseja excluir este equipamento? Esta ação não poderá ser desfeita."
+  (resposta)="aoConfirmarExclusao($event)">
+</app-confirm-dialog>

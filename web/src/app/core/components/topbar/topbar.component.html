@@ -1,0 +1,42 @@
+<header class="topbar">
+  
+  <button class="icon-btn btn-menu-mobile" (click)="alternarMenu()">
+    <i class="ph ph-list"></i>
+  </button>
+
+  <div class="context-selector">
+    <i class="ph ph-map-pin"></i>
+    <select class="farm-select" [(ngModel)]="propriedadeSelecionadaId" (change)="aoTrocarContexto($event)" [disabled]="propriedadesGlobais.length === 0">
+      <option *ngIf="propriedadesGlobais.length === 0" [value]="null" disabled>Nenhuma propriedade cadastrada</option>
+      <option *ngFor="let prop of propriedadesGlobais" [value]="prop.id">
+        {{ prop.nome }}
+      </option>
+    </select>
+  </div>
+
+  <div class="user-controls">
+    <span class="user-name desktop-only">{{ nomeUsuario }}</span>
+    <div class="avatar">{{ iniciaisUsuario }}</div>
+    
+    <button class="btn-icon" (click)="abrirDialogPerfil()" title="Editar Perfil">
+      <i class="ph ph-user-gear"></i>
+    </button>
+    
+    <button class="btn-logout" (click)="sair()" title="Sair do Sistema">
+      <span class="desktop-only">Sair</span>
+      <i class="ph ph-sign-out mobile-only"></i>
+    </button>
+  </div>
+</header>
+
+<app-editar-perfil-dialog
+  *ngIf="exibirDialogPerfil"
+  [usuario]="dadosUsuarioAtual"
+  (fechar)="exibirDialogPerfil = false"
+  (salvar)="salvarEdicaoPerfil($event)">
+</app-editar-perfil-dialog>
+
+<div class="sifeo-toast" [ngClass]="toastTipo" *ngIf="toastMsg">
+  <i class="ph" [ngClass]="toastTipo === 'sucesso' ? 'ph-check-circle' : 'ph-warning-circle'"></i>
+  <span>{{ toastMsg }}</span>
+</div>

@@ -1,0 +1,119 @@
+<div class="dialog-overlay">
+  <div class="dialog-card">
+
+    <header class="dialog-header">
+      <h2>{{ isEdicao ? 'Editar Documento' : 'Novo Documento' }}</h2>
+      <button class="btn-close" (click)="cancelar()" type="button">
+        <i class="ph ph-x"></i>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      <div class="alert-error" *ngIf="erroValidacao">
+        <i class="ph ph-warning-circle"></i> {{ erroValidacao }}
+      </div>
+
+      <div class="form-group">
+        <label>Nome do Documento *</label>
+        <input type="text" [(ngModel)]="dadosDocumento.nome" placeholder="Ex: Nota fiscal do trator">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoria *</label>
+          <div class="input-com-botao">
+            <select [(ngModel)]="dadosDocumento.categoriaId">
+              <option [ngValue]="null">Selecione...</option>
+              <option *ngFor="let cat of categorias" [ngValue]="cat.id">{{ cat.nome }}</option>
+            </select>
+            <button type="button" class="btn-primary" (click)="abrirModalNovaCategoria()" title="Nova Categoria">
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Data do Documento *</label>
+          <input type="date" [(ngModel)]="dadosDocumento.dataAdicionado">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Vincular a</label>
+          <select [(ngModel)]="dadosDocumento.tipoVinculo" (change)="aoTrocarTipoVinculo()">
+            <option value="">Geral da propriedade</option>
+            <option value="SETOR">Setor</option>
+            <option value="EQUIPAMENTO">Equipamento</option>
+            <option value="INSUMO">Insumo</option>
+            <option value="FUNCIONARIO">Funcionário</option>
+            <option value="ATIVIDADE">Atividade</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="dadosDocumento.tipoVinculo">
+          <label>Registro Vinculado *</label>
+          <select [(ngModel)]="dadosDocumento.vinculoId">
+            <option [ngValue]="null">Selecione...</option>
+            <option *ngFor="let item of opcoesVinculo" [ngValue]="item.id">{{ rotuloOpcaoVinculo(item) }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo de Lançamento *</label>
+          <div class="toggle-receita-despesa">
+            <button
+              type="button"
+              class="opcao despesa"
+              [class.ativo]="!dadosDocumento.receitaDespesa"
+              (click)="dadosDocumento.receitaDespesa = false">
+              <i class="ph ph-arrow-circle-down"></i> Despesa
+            </button>
+            <button
+              type="button"
+              class="opcao receita"
+              [class.ativo]="dadosDocumento.receitaDespesa"
+              (click)="dadosDocumento.receitaDespesa = true">
+              <i class="ph ph-arrow-circle-up"></i> Receita
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Valor (R$) *</label>
+          <input type="number" step="0.01" min="0" [(ngModel)]="dadosDocumento.valor" placeholder="0,00">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea [(ngModel)]="dadosDocumento.descricao" rows="2" placeholder="Observações sobre o documento..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Arquivo {{ isEdicao ? '' : '*' }}</label>
+        <input type="file" (change)="onArquivoSelecionado($event)" accept=".pdf,.jpg,.jpeg,.png,.webp">
+        <small class="dica-arquivo" *ngIf="nomeArquivoAtual && isEdicao">
+          Arquivo atual: {{ nomeArquivoAtual }} — selecione um novo arquivo para substituí-lo.
+        </small>
+        <small class="dica-arquivo">Tamanho máximo: 8MB.</small>
+      </div>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()" [disabled]="carregando" type="button">Cancelar</button>
+      <button class="btn-primary" (click)="confirmar()" [disabled]="carregando" type="button">
+        {{ carregando ? 'Salvando...' : 'Salvar Documento' }}
+      </button>
+    </footer>
+
+  </div>
+</div>
+
+<app-registrar-categoria-dialog
+  *ngIf="mostrarModalCategoria"
+  (fechar)="mostrarModalCategoria = false"
+  (salvo)="onCategoriaCriada($event)">
+</app-registrar-categoria-dialog>

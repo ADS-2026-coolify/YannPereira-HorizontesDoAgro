@@ -1,0 +1,180 @@
+@use '../../../../styles/colors' as *;
+
+.desktop-only { display: inline-block; }
+.mobile-only { display: none; } 
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: $text-muted;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  
+  &:hover { color: $text-light; }
+}
+
+.topbar {
+  min-height: 70px;
+  background-color: $bg-card;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .btn-menu-mobile {
+    display: none; 
+  }
+
+  .context-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1; 
+
+    i {
+      color: $text-muted;
+      font-size: 1.25rem;
+    }
+
+    .farm-select {
+      background: transparent;
+      color: $text-light;
+      border: 1px solid $border-color;
+      padding: 10px 14px;
+      border-radius: 6px;
+      outline: none;
+      max-width: 350px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 0.95rem;
+
+      &:focus { border-color: $green-primary; }
+      option { background-color: $bg-card; }
+    }
+  }
+
+  .user-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .user-name {
+      color: $text-light;
+      font-weight: 500;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: $green-primary;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+    }
+
+    .btn-logout {
+      background-color: $red-danger;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &:hover { background-color: $red-danger-hover; }
+    }
+  }
+}
+
+.btn-icon {
+  background-color: transparent;
+  border: 1px solid $green-primary; 
+  color: $green-primary; 
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px; 
+  transition: all 0.2s ease; 
+
+  &:hover {
+    border-color: $green-hover;
+    color: $green-hover;
+    background-color: rgba(85, 112, 72, 0.15);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: inline-block !important; } 
+  
+  .topbar {
+    padding: 12px 16px; 
+    height: auto; 
+    
+    .btn-menu-mobile {
+      display: flex; 
+    }
+
+    .user-controls {
+      margin-left: auto; 
+      .btn-logout {
+        padding: 8px;
+      }
+    }
+
+    .context-selector {
+      flex: 0 0 100%; 
+      order: 3; 
+      margin-top: 4px;
+      
+      .farm-select {
+        max-width: 100%; 
+      }
+    }
+  }
+}
+
+.sifeo-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  border-radius: 6px;
+  background-color: $bg-card;
+  color: $text-light;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out forwards;
+
+  &.sucesso { border-left: 4px solid $green-primary; i { color: $green-hover; } }
+  &.erro { border-left: 4px solid $red-danger; i { color: #ff6b6b; } }
+  i { font-size: 1.25rem; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

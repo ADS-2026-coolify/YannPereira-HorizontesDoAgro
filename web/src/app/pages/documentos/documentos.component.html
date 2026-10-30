@@ -1,0 +1,122 @@
+<div class="page-container">
+
+  <header class="page-header">
+    <h1 class="page-title">Documentos</h1>
+    <button class="btn-primary" (click)="abrirModal()">
+      + Novo Documento
+    </button>
+  </header>
+
+  <section class="resumo-grid">
+    <div class="resumo-card receita">
+      <i class="ph ph-arrow-circle-up"></i>
+      <div>
+        <strong>{{ resumo.totalReceitas | currency:'BRL' }}</strong>
+        <span>Receitas</span>
+      </div>
+    </div>
+    <div class="resumo-card despesa">
+      <i class="ph ph-arrow-circle-down"></i>
+      <div>
+        <strong>{{ resumo.totalDespesas | currency:'BRL' }}</strong>
+        <span>Despesas</span>
+      </div>
+    </div>
+    <div class="resumo-card saldo" [class.negativo]="resumo.saldo < 0">
+      <i class="ph ph-scales"></i>
+      <div>
+        <strong>{{ resumo.saldo | currency:'BRL' }}</strong>
+        <span>Saldo</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="filtros-bar">
+    <div class="filtro-busca">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="text" placeholder="Buscar por nome..." [(ngModel)]="filtros.busca" (ngModelChange)="aplicarFiltros()">
+    </div>
+
+    <select [(ngModel)]="filtros.categoriaId" (ngModelChange)="aplicarFiltros()">
+      <option [ngValue]="null">Todas as categorias</option>
+      <option *ngFor="let cat of categorias" [ngValue]="cat.id">{{ cat.nome }}</option>
+    </select>
+
+    <select [(ngModel)]="filtros.tipoVinculo" (ngModelChange)="aplicarFiltros()">
+      <option value="">Todos os vínculos</option>
+      <option value="SETOR">Setor</option>
+      <option value="EQUIPAMENTO">Equipamento</option>
+      <option value="INSUMO">Insumo</option>
+      <option value="FUNCIONARIO">Funcionário</option>
+      <option value="ATIVIDADE">Atividade</option>
+    </select>
+
+    <select [(ngModel)]="filtros.receitaDespesa" (ngModelChange)="aplicarFiltros()">
+      <option value="">Receitas e despesas</option>
+      <option value="RECEITA">Somente receitas</option>
+      <option value="DESPESA">Somente despesas</option>
+    </select>
+  </section>
+
+  <main class="page-content">
+    <div *ngIf="carregando" class="estado-info">Carregando documentos...</div>
+
+    <div *ngIf="!carregando && !idSitioAtual" class="estado-info">
+      Selecione uma propriedade na barra superior para ver os documentos.
+    </div>
+
+    <div *ngIf="!carregando && idSitioAtual && documentosFiltrados.length === 0" class="estado-info">
+      Nenhum documento encontrado.
+    </div>
+
+    <div class="documentos-grid" *ngIf="!carregando && documentosFiltrados.length > 0">
+      <div class="documento-card" *ngFor="let doc of documentosFiltrados">
+        <div class="documento-card-topo">
+          <div class="documento-icone">
+            <i class="ph" [ngClass]="iconeArquivo(doc.tipoArquivo)"></i>
+          </div>
+          <span class="valor-badge" [ngClass]="doc.receitaDespesa ? 'receita' : 'despesa'">
+            {{ doc.receitaDespesa ? '+' : '-' }} {{ doc.valor | currency:'BRL' }}
+          </span>
+        </div>
+
+        <h3 class="documento-nome" [title]="doc.nome">{{ doc.nome }}</h3>
+        <span class="categoria-badge">{{ doc.categoriaNome }}</span>
+
+        <p class="documento-vinculo">
+          <i class="ph ph-link"></i> {{ rotuloVinculo(doc) }}
+        </p>
+        <p class="documento-data">
+          <i class="ph ph-calendar"></i> {{ doc.dataAdicionado | date:'dd/MM/yyyy' }}
+        </p>
+
+        <div class="documento-acoes">
+          <button class="btn-icon baixar" (click)="baixarArquivo(doc)" title="Baixar arquivo">
+            <i class="ph ph-download-simple"></i>
+          </button>
+          <button class="btn-icon edit" (click)="abrirModalEdicao(doc)" title="Editar documento">
+            <i class="ph ph-pencil-simple"></i>
+          </button>
+          <button class="btn-icon delete" (click)="deletarDocumento(doc.id)" title="Excluir documento">
+            <i class="ph ph-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<app-cadastrar-documento-dialog
+  *ngIf="mostrarModal"
+  [documentoParaEditar]="documentoSelecionadoParaEdicao"
+  (fechar)="fecharModal()"
+  (salvo)="atualizarLista()">
+</app-cadastrar-documento-dialog>
+
+<app-confirm-dialog
+  *ngIf="idDocumentoParaExcluir !== null"
+  titulo="Excluir Documento"
+  mensagem="Tem certeza que deseja excluir este documento? O arquivo será removido permanentemente do sistema."
+  (resposta)="aoResponderExclusao($event)">
+</app-confirm-dialog>

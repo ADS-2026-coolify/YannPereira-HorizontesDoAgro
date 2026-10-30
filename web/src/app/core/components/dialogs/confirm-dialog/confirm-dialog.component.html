@@ -1,0 +1,21 @@
+<div class="dialog-overlay" (click)="cancelar()">
+  <div class="dialog-card" (click)="$event.stopPropagation()">
+    
+    <div class="dialog-header">
+      <h2><i class="ph ph-warning" style="color: #e6a23c; margin-right: 8px;"></i> {{ titulo }}</h2>
+      <button class="btn-close" (click)="cancelar()">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+
+    <div class="dialog-body">
+      <p>{{ mensagem }}</p>
+    </div>
+
+    <footer class="dialog-actions">
+      <button class="btn-outline" (click)="cancelar()">Cancelar</button>
+      <button class="btn-danger" (click)="confirmar()">Sim, Excluir</button>
+    </footer>
+
+  </div>
+</div>

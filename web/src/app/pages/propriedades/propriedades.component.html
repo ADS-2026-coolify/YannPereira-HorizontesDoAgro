@@ -1,0 +1,64 @@
+<div class="page-container">
+  
+  <header class="page-header">
+    <h1 class="page-title">Propriedades</h1>
+    <button class="btn-primary" (click)="registrarPropriedade()">
+      + Registrar Propriedade
+    </button>
+  </header>
+
+  <div class="content-card">
+    <div class="table-responsive">
+      <table class="sifeo-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CEP</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prop of propriedades">
+            <td data-label="Nome">{{ prop.nome }}</td>
+            <td data-label="CEP">{{ prop.cep ? (prop.cep | mask: '00000-000') : '-' }}</td>
+            <td data-label="Município">{{ prop.municipio }}</td>
+            <td data-label="UF">{{ prop.uf }}</td>
+            <td data-label="Ações">
+              <div class="action-buttons">
+                  <button class="btn-icon edit" (click)="verDetalhes(prop)" title="Ver / Editar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+              
+                  <button class="btn-icon delete" (click)="iniciarExclusao(prop)" title="Excluir Propriedade">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+    <app-registro-propriedade-dialog 
+      *ngIf="exibirDialogRegistro" 
+      (fechar)="exibirDialogRegistro = false"
+      (salvar)="salvarNovaPropriedade($event)">
+    </app-registro-propriedade-dialog>
+
+    <app-detalhes-propriedade-dialog
+      *ngIf="exibirDialogDetalhes"
+      [propriedade]="propriedadeSelecionada"
+      (fechar)="exibirDialogDetalhes = false"
+      (salvar)="salvarEdicaoPropriedade($event)">
+    </app-detalhes-propriedade-dialog>
+
+    <app-confirmar-exclusao-dialog
+      *ngIf="exibirDialogExclusao"
+      [nomePropriedade]="propriedadeParaExcluir?.nome"
+      (fechar)="exibirDialogExclusao = false"
+      (confirmar)="executarExclusao()">
+    </app-confirmar-exclusao-dialog>
