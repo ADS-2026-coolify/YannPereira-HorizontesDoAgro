@@ -1,4 +1,4 @@
-name: Deploy no Coolify
+name: CI e deploy
 
 on:
   push:
@@ -44,8 +44,32 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      # A API REST do Coolify esta desativada nesta instancia, e so um
+      # administrador pode liga-la. Enquanto estiver assim, o deploy e feito
+      # pelo Auto Deploy do Coolify, acionado pelo webhook do GitHub, e este
+      # job apenas registra isso. Se a API for liberada um dia, basta cadastrar
+      # os tres secrets: o passo seguinte volta a rodar sozinho.
+      - name: Verificar se a API do Coolify esta disponivel
+        id: cfg
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_UUID: ${{ secrets.COOLIFY_UUID }}
+        run: |
+          if [ -n "$COOLIFY_URL" ] && [ -n "$COOLIFY_TOKEN" ] && [ -n "$COOLIFY_UUID" ]; then
+            echo "configurado=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configurado=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Secrets do Coolify ausentes. O deploy e feito pelo Auto Deploy, via webhook do GitHub."
+          fi
+
       - name: Chamar a API do Coolify
+        if: steps.cfg.outputs.configurado == 'true'
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_UUID: ${{ secrets.COOLIFY_UUID }}
         run: |
           curl --fail-with-body --silent --show-error \
-            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
-            "${{ secrets.COOLIFY_URL }}/api/v1/deploy?uuid=${{ secrets.COOLIFY_UUID }}&force=false"
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+            "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_UUID&force=false"

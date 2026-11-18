@@ -72,10 +72,25 @@ git push -u origin main
 
 ### 2. Criar o recurso no Coolify
 
-1. No painel do Coolify: **+ New** -> **Resource** -> **Docker Compose**.
-2. Escolha a fonte **GitHub** e selecione este repositorio e a branch `main`.
-3. Em **Docker Compose Location**, deixe `/docker-compose.yml`.
-4. Salve. O Coolify le o arquivo e lista os tres servicos.
+Em **+ New** -> **Resource**, escolha um cartao da secao **Git Based**:
+**Public Repository**, se o repositorio for publico, ou **Private
+Repository (with GitHub App)**, se for privado.
+
+Nao use os cartoes da secao Docker (Dockerfile, Docker Compose, Docker
+Image): todos dizem *without a Git repository* e pedem o arquivo colado
+na mao. Este `docker-compose.yml` usa `build: ./api` e `build: ./web`,
+que precisam dos arquivos do repositorio para construir as imagens.
+
+Depois de informar o repositorio e a branch `main`, ajuste na propria
+aplicacao:
+
+| Campo | Valor |
+| --- | --- |
+| **Build Pack** | `Docker Compose` |
+| **Docker Compose Location** | `/docker-compose.yml` |
+| **Base Directory** | `/` (ou a subpasta, se o projeto nao for a raiz) |
+
+Salve. O Coolify le o arquivo e lista os tres servicos.
 
 ### 3. Cadastrar as variaveis de ambiente
 
@@ -104,23 +119,37 @@ Clique em **Deploy**. O Coolify faz o build das duas imagens a partir dos
 Dockerfiles e sobe a stack. Depois, carregue os dados de demonstracao pelo
 terminal do servico `banco`, no proprio painel.
 
-### 6. Ligar o GitHub Actions
+### 6. Automatizar o deploy
 
-O workflow `.github/workflows/deploy.yml` compila API e front a cada push
-na `main` e, se o build passar, chama a API do Coolify para implantar.
+Nesta instancia do Coolify a **API REST esta desativada** e so um
+administrador da instancia pode liga-la. Sem ela, `/api/v1/deploy` rejeita
+qualquer chamada, entao o Actions nao consegue mandar o Coolify implantar.
+O deploy passa a ser acionado pelo **webhook do GitHub**.
 
-Crie um token em **Keys & Tokens** -> **API tokens** no Coolify e copie o
-UUID da aplicacao (visivel na URL do recurso). Em seguida, no GitHub, em
-**Settings** -> **Secrets and variables** -> **Actions**, cadastre:
+Como a fonte escolhida foi **Public Repository**, o Coolify nao tem o
+GitHub App instalado e nao descobre os pushes sozinho: o webhook precisa
+ser criado a mao.
 
-| Secret | Valor |
-| --- | --- |
-| `COOLIFY_URL` | URL do painel, sem barra no fim |
-| `COOLIFY_TOKEN` | o token de API |
-| `COOLIFY_UUID` | UUID da aplicacao |
+1. Na aplicacao, abra **Webhooks** e copie a URL do webhook manual do
+   GitHub e o secret que aparece ao lado.
+2. No repositorio, em **Settings** -> **Webhooks** -> **Add webhook**:
+   - *Payload URL*: a URL copiada
+   - *Content type*: `application/json`
+   - *Secret*: o secret copiado
+   - *Events*: apenas `push`
+3. De volta na aplicacao, ligue **Auto Deploy**.
 
-Com isso, desative **Auto Deploy** no Coolify, para o deploy acontecer
-apenas quando o build do Actions passar.
+A partir dai, todo push na `main` faz o Coolify reconstruir e subir a
+stack, enquanto o workflow `.github/workflows/deploy.yml` compila API e
+front em paralelo, servindo de verificacao.
+
+O job `implantar` do workflow checa se os secrets `COOLIFY_URL`,
+`COOLIFY_TOKEN` e `COOLIFY_UUID` existem. Sem eles, ele apenas registra um
+aviso e termina em verde. Se a API for liberada algum dia, basta cadastrar
+os tres em **Settings** -> **Secrets and variables** -> **Actions** (como
+*repository secrets*, nao *environment secrets*) e o deploy volta a ser
+disparado pelo Actions, condicionado ao build passar. Nesse caso, desligue
+o Auto Deploy para nao deployar duas vezes.
 
 ## Diferencas em relacao aos repositorios originais
 
